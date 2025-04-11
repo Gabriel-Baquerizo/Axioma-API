@@ -1,13 +1,13 @@
 import { pool } from "../database/connection.js"
 
-
+// GET ————————————————————————————————————————————
 export const getRestaurants = async (req, res) => {
     try {
         const [rows] = await pool.query(
-            'SELECT * FROM restaurants'
+            'SELECT * FROM restaurantes'
         );
         res.json(rows)
-
+        
     } catch (error) {
         return res.status(500).json({
             message : 'Algo salió mal'
@@ -16,11 +16,12 @@ export const getRestaurants = async (req, res) => {
 }
 
 
+// GET ————————————————————————————————————————————
 export const getARestaurant = async (req, res) => {
     try {
         // throw new Error("Error")
         const [rows] = await pool.query(
-            'SELECT * FROM restaurants WHERE id = ?',
+            'SELECT * FROM restaurantes WHERE id = ?',
             [req.params.id]
         )
         if (rows.length <= 0) return res.status(404).json({
@@ -36,18 +37,19 @@ export const getARestaurant = async (req, res) => {
 }
 
 
+// POST ————————————————————————————————————————————
 export const postRestaurants = async (req, res) => {
-    const {tlf_ip, local} = req.body;
+    const {extension, restaurante} = req.body;
 
     try {
         const [rows] = await pool.query(
-            'INSERT INTO restaurants (tlf_ip, local) VALUES (?, ?)',
-            [tlf_ip, local]
+            'INSERT INTO restaurantes (extension, restaurante) VALUES (?, ?)',
+            [extension, restaurante]
         );
         res.send({
             id: rows.insertId,
-            tlf_ip,
-            local
+            extension,
+            restaurante
         })
 
     } catch (error) {
@@ -58,14 +60,15 @@ export const postRestaurants = async (req, res) => {
 }
 
 
+// PATCH ————————————————————————————————————————————
 export const patchRestaurants = async (req, res) => {
     const {id} = req.params
-    const {tlf_ip, local} = req.body
+    const {extension, restaurante} = req.body
 
     try {
         const [result] = await pool.query(
-            'UPDATE restaurants SET tlf_ip = IFNULL(?, tlf_ip), local = IFNULL(?, local) WHERE id = ?',
-            [tlf_ip, local, id]
+            'UPDATE restaurantes SET extension = IFNULL(?, extension), restaurante = IFNULL(?, restaurante) WHERE id = ?',
+            [extension, restaurante, id]
         )
     
         if(result.affectedRows == 0) return res.status(404).json({
@@ -73,7 +76,7 @@ export const patchRestaurants = async (req, res) => {
         })
     
         const [rows] = await pool.query(
-            'SELECT * FROM restaurants WHERE id = ?',
+            'SELECT * FROM restaurantes WHERE id = ?',
             [id]
         )
     
@@ -87,10 +90,11 @@ export const patchRestaurants = async (req, res) => {
 }
 
 
+// DELETE ————————————————————————————————————————————
 export const deleteRestaurants = async (req, res) => {
     try {
         const [RESULT] = await pool.query(
-            'DELETE FROM restaurants WHERE id = ?',
+            'DELETE FROM restaurantes WHERE id = ?',
             [req.params.id]
         )
         if (RESULT.affectedRows <= 0) return res.status(404).json({

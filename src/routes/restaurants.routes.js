@@ -3,14 +3,14 @@ import { getRestaurants, postRestaurants, patchRestaurants, deleteRestaurants, g
 
 const router = Router();
 
-router.get('/locales', getRestaurants)
+router.get('/restaurantes', getRestaurants)
 
-router.get('/locales/:id', getARestaurant)
+router.get('/restaurantes/:id', getARestaurant)
 
-router.post('/locales', postRestaurants)
+router.post('/restaurantes', postRestaurants)
 
-router.patch('/locales/:id', patchRestaurants)
+router.patch('/restaurantes/:id', patchRestaurants)
 
-router.delete('/locales/:id', deleteRestaurants)
+router.delete('/restaurantes/:id', deleteRestaurants)
 
 export default router;
