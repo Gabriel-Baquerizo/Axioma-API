@@ -6,7 +6,8 @@ const pool = createPool({
     post: DB_PORT,
     user: DB_USER,
     password: DB_PASS,
-    database: DB_NAME
+    database: DB_NAME,
+    multipleStatements: true
 })
 
 export {
